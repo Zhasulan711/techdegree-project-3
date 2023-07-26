@@ -256,17 +256,6 @@ activityCheckboxes.each((index, checkbox) => {
 /***
  * EXTRA CREDITE 3) Conditional Error Message
  */
-function showError(field, hint) {
-  field.attr("class", "error-border");
-  hint.css("display", "block");
-}
-
-// Helper function to remove error message
-function hideError(field, hint) {
-  field.attr("class", "");
-  hint.css("display", "none");
-}
-
 function validateEmail() {
   const emailField = $("#email"); // input
   const emailHint = $("#email-hint"); //span 1
@@ -274,16 +263,15 @@ function validateEmail() {
   const emailValue = emailField.val().trim();
 
   if (emailValue === "") {
-    showError(emailField, emailHint);
-    hideError(emailField, emailFormatHint);
+    emailFormatHint .css("display", "none");
+
   } else if (!isValidEmail(emailValue)) {
-    hideError(emailField, emailHint);
-    showError(emailField, emailFormatHint);
+    emailFormatHint .css("display", "block");
+
   } else {
-    hideError(emailField, emailHint);
-    hideError(emailField, emailFormatHint);
+    emailFormatHint .css("display", "none");
+
   }
 }
-
 
 
