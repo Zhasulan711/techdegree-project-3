@@ -233,9 +233,6 @@ $("form").on("submit", (e) => {
     e.preventDefault(); // Prevent form submission if validation fails
   }
   validateEmail();
-  if ($(".error-border").length === 0) {
-    $("form")[0].submit();
-  }
 });
 
 /***
