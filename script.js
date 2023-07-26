@@ -119,7 +119,9 @@ function createListener(validator) {
     const valid = validator(text);
     const showTip = text !== "" && !valid;
     const tooltip = e.target.nextElementSibling;
+    
     showOrHideTip(showTip, tooltip);
+    
     if (!valid) {
       $(e.target).addClass("error-highlight");
       $(e.target).removeClass("normal-highlight");
@@ -189,6 +191,7 @@ function validateForm() {
   showOrHideTip(!isZipCodeValid, $("#zip-hint")[0]);
   showOrHideTip(!isCCVValid, $("#cvv-hint")[0]);
   showOrHideTip(!isActivitySelected, $("#activities-hint")[0]);
+  
   $("#name, #email, #cc-num, #zip, #cvv").removeClass(
     "error-highlight normal-highlight"
   );
@@ -258,7 +261,6 @@ activityCheckboxes.each((index, checkbox) => {
  */
 function validateEmail() {
   const emailField = $("#email"); // input
-  const emailHint = $("#email-hint"); //span 1
   const emailFormatHint = $("#email-format-hint"); //span2
   const emailValue = emailField.val().trim();
 
