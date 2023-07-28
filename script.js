@@ -34,8 +34,8 @@ $("#design").on("change", (e) => {
   shirtLabel.show();
   theme.show();
   // change when changing the subject to the main text
-  theme.val("Select a design theme above");
-  hiddenOption.show();
+  hiddenOption.val();
+  // hiddenOption.show();
 });
 
 /***
@@ -82,15 +82,22 @@ $(".activities").on("change", "input[type='checkbox']", (e) => {
 const payment = $("#payment");
 const paymentOption = $("#payment option");
 paymentOption.slice(1).show();
-
+$("#paypal").hide();
+$("#bitcoin").hide();
 payment.on("change", (e) => {
   const selectedValue = $(e.target).val();
   if (selectedValue === "paypal") {
     $("#credit-card").hide();
+    $("#paypal").show();
+    $("#bitcoin").hide();
   } else if (selectedValue === "bitcoin") {
     $("#credit-card").hide();
+    $("#bitcoin").show();
+    $("#paypal").hide();
   } else {
     $("#credit-card").show();
+    $("#paypal").hide();
+    $("#bitcoin").hide();
   }
 });
 
@@ -119,9 +126,7 @@ function createListener(validator) {
     const valid = validator(text);
     const showTip = text !== "" && !valid;
     const tooltip = e.target.nextElementSibling;
-    
     showOrHideTip(showTip, tooltip);
-    
     if (!valid) {
       $(e.target).addClass("error-highlight");
       $(e.target).removeClass("normal-highlight");
@@ -132,15 +137,14 @@ function createListener(validator) {
   };
 }
 
-
 // Validators
-// Can only contain one A-z letter and letters a-z in lowercase and numbers on the end
+//
 function isValidUsername(username) {
-  return /^[w]{3,10}$/.test(username);
+  return /^\w+$/.test(username);
 }
 // Must be a valid email address
 function isValidEmail(email) {
-  return /^[0-9a-z]{5,13}\@[a-z]{4,5}\.[a-z]{3}$/.test(email);
+  return /^[0-9a-z]{5,13}\@\w*\.[a-z]{3}$/.test(email);
 }
 // Must contain a 13 or 16 numbers
 function isValidCardNumber(cardNumber) {
@@ -165,6 +169,10 @@ zipCodeInput.on("input", createListener(isValidZipCode));
 
 ccvInput.on("input", createListener(isValidCCV));
 
+// emailInput.on("input", createListener(validateEmail));
+
+// showOrHideTip(!isValidEmail(emailInput.val()), $("#email-format-hint")[0]);
+
 function validateForm() {
   // Validate each required field
   const isNameValid = isValidUsername(usernameInput.val());
@@ -186,43 +194,96 @@ function validateForm() {
 
   // Show/hide validation tips
   showOrHideTip(!isNameValid, $("#name-hint")[0]);
-  showOrHideTip(!isEmailValid, $("#email-hint")[0]);
+  showOrHideTip(!isEmailValid, $("#email-format-hint")[0]);
   showOrHideTip(!isCardNumberValid, $("#cc-hint")[0]);
   showOrHideTip(!isZipCodeValid, $("#zip-hint")[0]);
   showOrHideTip(!isCCVValid, $("#cvv-hint")[0]);
   showOrHideTip(!isActivitySelected, $("#activities-hint")[0]);
-  
-  $("#name, #email, #cc-num, #zip, #cvv").removeClass(
+  $("#name, #email, #activities-box, #cc-num, #zip, #cvv").removeClass(
     "error-highlight normal-highlight"
   );
   if (!isNameValid) {
     $("#name").addClass("error-highlight");
+    $(".redError1").addClass("redError");
+    $("#name").addClass("error-border");
+    $(".redError1 .fa-circle-exclamation").css("visibility", "visible");
+    $(".redError1 .fa-circle-check").css("visibility", "hidden");
   } else {
     $("#name").addClass("normal-highlight");
+    $(".redError1").removeClass("redError");
+    $("#name").removeClass("error-border");
+    $(".redError1 .fa-circle-exclamation").css("visibility", "hidden");
+    $(".redError1 .fa-circle-check").css("visibility", "visible");
   }
 
   if (!isEmailValid) {
     $("#email").addClass("error-highlight");
+    $(".redError2").addClass("redError");
+    $("#email").addClass("error-border");
+    $(".redError2 .fa-circle-exclamation").css("visibility", "visible");
+    $(".redError2 .fa-circle-check").css("visibility", "hidden");
   } else {
     $("#email").addClass("normal-highlight");
+    $(".redError2").removeClass("redError");
+    $("#email").removeClass("error-border");
+    $(".redError2 .fa-circle-exclamation").css("visibility", "hidden");
+    $(".redError2 .fa-circle-check").css("visibility", "visible");
+  }
+
+  if (!isActivitySelected) {
+    $("#activities-box").addClass("error-highlight");
+    $(".redError3").addClass("redError");
+    $("#activities-box").addClass("error-border");
+    $(".redError3 .fa-circle-exclamation").css("visibility", "visible");
+    $(".redError3 .fa-circle-check").css("visibility", "hidden");
+  } else {
+    $("#activities-box").addClass("normal-highlight");
+    $(".redError3").removeClass("redError");
+    $("#activities-box").removeClass("error-border");
+    $(".redError3 .fa-circle-exclamation").css("visibility", "hidden");
+    $(".redError3 .fa-circle-check").css("visibility", "visible");
   }
 
   if (!isCardNumberValid) {
     $("#cc-num").addClass("error-highlight");
+    $(".redError4").addClass("redError");
+    $("#cc-num").addClass("error-border");
+    $(".redError4 .fa-circle-exclamation").css("visibility", "visible");
+    $(".redError4 .fa-circle-check").css("visibility", "hidden");
   } else {
     $("#cc-num").addClass("normal-highlight");
+    $(".redError4").removeClass("redError");
+    $("#cc-num").removeClass("error-border");
+    $(".redError4 .fa-circle-exclamation").css("visibility", "hidden");
+    $(".redError4 .fa-circle-check").css("visibility", "visible");
   }
 
   if (!isZipCodeValid) {
     $("#zip").addClass("error-highlight");
+    $(".redError5").addClass("redError");
+    $("#zip").addClass("error-border");
+    $(".redError5 .fa-circle-exclamation").css("visibility", "visible");
+    $(".redError5 .fa-circle-check").css("visibility", "hidden");
   } else {
     $("#zip").addClass("normal-highlight");
+    $(".redError5").removeClass("redError");
+    $("#zip").removeClass("error-border");
+    $(".redError5 .fa-circle-exclamation").css("visibility", "hidden");
+    $(".redError5 .fa-circle-check").css("visibility", "visible");
   }
 
   if (!isCCVValid) {
     $("#cvv").addClass("error-highlight");
+    $(".redError6").addClass("redError");
+    $("#cvv").addClass("error-border");
+    $(".redError6 .fa-circle-exclamation").css("visibility", "visible");
+    $(".redError6 .fa-circle-check").css("visibility", "hidden");
   } else {
     $("#cvv").addClass("normal-highlight");
+    $(".redError6").removeClass("redError");
+    $("#cvv").removeClass("error-border");
+    $(".redError6 .fa-circle-exclamation").css("visibility", "hidden");
+    $(".redError6 .fa-circle-check").css("visibility", "visible");
   }
   // Prevent form submission if any of the fields are invalid
   if (!isNameValid || !isEmailValid || !isActivitySelected || !isPaymentValid) {
@@ -231,11 +292,19 @@ function validateForm() {
   return true;
 }
 
+let hintAdded = false;
 $("form").on("submit", (e) => {
   if (!validateForm()) {
     e.preventDefault(); // Prevent form submission if validation fails
+    if (!hintAdded) {
+      const $html =
+        '<p id="allActivities-hint" class="allActivities-hint">Please pay attention to each field</p>';
+      $(".payment-methods").after($html);
+      hintAdded = true; // Устанавливаем флаг в true, чтобы пометить, что подсказка была добавлена
+    }
   }
   validateEmail();
+  validateName();
 });
 
 /***
@@ -259,21 +328,33 @@ activityCheckboxes.each((index, checkbox) => {
 /***
  * EXTRA CREDITE 3) Conditional Error Message
  */
+
 function validateEmail() {
   const emailField = $("#email"); // input
-  const emailFormatHint = $("#email-format-hint"); //span2
+  const emailFormatHint = $("#email-hint"); //span2
   const emailValue = emailField.val().trim();
 
   if (emailValue === "") {
-    emailFormatHint .css("display", "none");
-
+    emailFormatHint.show();
   } else if (!isValidEmail(emailValue)) {
-    emailFormatHint .css("display", "block");
-
+    emailFormatHint.show();
   } else {
-    emailFormatHint .css("display", "none");
-
+    emailFormatHint.hide();
   }
 }
 
+function validateName() {
+  const nameError = $("#name-hint");
+  const nameInput1 = $("#name").val().trim();
+  if (nameInput1 === "") {
+    nameError.show();
+  } else {
+    nameError.hide();
+  }
+}
 
+// Call the validateName() function once on page load
+validateName();
+
+// Add an input event handler for the named field
+$("#name").on("input", validateName);
