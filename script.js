@@ -292,6 +292,7 @@ function validateForm() {
   return true;
 }
 
+//create a message in the end
 let hintAdded = false;
 $("form").on("submit", (e) => {
   if (!validateForm()) {
@@ -342,7 +343,7 @@ function validateEmail() {
     emailFormatHint.hide();
   }
 }
-
+// When empty send error
 function validateName() {
   const nameError = $("#name-hint");
   const nameInput1 = $("#name").val().trim();
