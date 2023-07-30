@@ -7,7 +7,6 @@
 	<link rel="stylesheet" href="css/normalize.css">
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css"/>
-  <script src="https://kit.fontawesome.com/1b4f5a1cb6.js" crossorigin="anonymous"></script>
 </head>
 <body>
   <header>
@@ -25,16 +24,14 @@
         <fieldset class="basic-info">         
           <legend>Basic Info</legend>
           
-          <label class = "redError1" for="name">Name: <span class="asterisk">*</span> <i class="fa-solid fa-circle-exclamation"></i> <i class="fa-solid fa-circle-check"></i>
-            <input type="text" id="name" name="user-name" class="error-highlight normal-highlight" autofocus> <!--this link of autofocus: https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/autofocus-->
-            <span class = "redError2" id="name-hint" class="name-hint hint">Name field cannot be blank</span>
-            
+          <label  for="name">Name: <span class="asterisk">*</span>
+            <input type="text" id="name" name="user-name" class="error-border">
+            <span id="name-hint" class="name-hint hint">Name field cannot be blank</span>
           </label>
           
           
-          <label class = "redError2 for="email">Email Address: <span class="asterisk">*</span> <i class="fa-solid fa-circle-exclamation"></i> <i class="fa-solid fa-circle-check"></i>
-            <input type="email" id="email" name="user-email"  class="error-highlight normal-highlight">
-            <span class="hint" id="email-format-hint">The mailbox name must be between 5 and 31 characters long. after that you need to insert "@"", write your email, enter a dot(".") and write "com"</span>
+          <label for="email">Email Address: <span class="asterisk">*</span>
+            <input type="email" id="email" name="user-email" class="error-border">
             <span id="email-hint" class="email-hint hint">Email address must be formatted correctly</span>
           </label>
           
@@ -93,8 +90,8 @@
       </div>               
 
       <fieldset id="activities" class="activities">
-        <legend class = "redError3">Register for Activities <span class="asterisk">*</span> <i class="fa-solid fa-circle-exclamation"></i> <i class="fa-solid fa-circle-check"></i></legend>
-        <div id="activities-box" class="activities-box error-highlight normal-highlight">
+        <legend>Register for Activities <span class="asterisk">*</span></legend>
+        <div id="activities-box" class="activities-box error-border">
           <label>
             <input type="checkbox" name="all" data-cost="200">
             <span>Main Conference</span>
@@ -154,7 +151,7 @@
         <div class="payment-method-box">
           <label for="payment">I'm going to pay with:</label>
           <select id="payment" name="user-payment">
-            <option value="select method" hidden>Select Payment Method</option>
+            <option value="select method" >Select Payment Method</option>
             <option value="credit-card" selected hidden>Credit Card</option>
             <option value="paypal">PayPal</option>
             <option value="bitcoin">Bitcoin</option>
@@ -165,7 +162,7 @@
           <div class="expiration-box">
             <div class="month-box">
               <label for="exp-month">Expiration Date:</label>
-              <select id="exp-month" name="user-exp-month" >
+              <select id="exp-month" name="user-exp-month" class="error-border">
                 <option hidden>Select Date</option>
                 <option value="1">01 - January</option>
                 <option value="2">02 - February</option>
@@ -197,22 +194,22 @@
 
           <div class="credit-card-box">
             <div class="num-box">
-              <label class = "redError4" for="cc-num">Card Number: <span class="asterisk">*</span> <i class="fa-solid fa-circle-exclamation"></i> <i class="fa-solid fa-circle-check"></i>
-                <input id="cc-num" name="user-cc-num" type="text" class=" error-highlight normal-highlight">
+              <label  for="cc-num">Card Number: <span class="asterisk">*</span>
+                <input id="cc-num" name="user-cc-num" type="text" class="error-border">
                 <span id="cc-hint" class="cc-hint hint">Credit card number must be between 13 - 16 digits</span>
               </label>
             </div>
 
             <div class="zip-box">
-              <label class = "redError5" for="zip">Zip Code: <span class="asterisk">*</span> <i class="fa-solid fa-circle-exclamation"></i> <i class="fa-solid fa-circle-check"></i>
-                <input id="zip" name="user-zip" type="text" class=" error-highlight normal-highlight">
+              <label for="zip">Zip Code: <span class="asterisk">*</span>
+                <input id="zip" name="user-zip" type="text" class="error-border">
                 <span id="zip-hint" class="zip-hint hint">Zip Code must be 5 digits</span>
               </label>
             </div>
 
             <div class="cvv-box">
-              <label class = "redError6" for="cvv">CVV: <span class="asterisk">*</span> <i class="fa-solid fa-circle-exclamation"></i> <i class="fa-solid fa-circle-check"></i>
-                <input id="cvv" name="user-cvv" type="text" class="error-highlight normal-highlight">
+              <label for="cvv">CVV: <span class="asterisk">*</span>
+                <input id="cvv" name="user-cvv" type="text" class="error-border">
                 <span id="cvv-hint" class="cvv-hint hint">CVV must be 3 digits</span>
               </label>
             </div>
@@ -229,6 +226,7 @@
         	<p>If you selected the Bitcoin option we'll take you to the Coinbase site to set up your billing information. Due to the nature of exchanging Bitcoin, all Bitcoin transactions will be final.</p>
         </div>                  
       </fieldset>        
+        
       <button type="submit">Register</button>      
     </form>
   </div>
