@@ -140,11 +140,11 @@ function isValidUsername(username) {
 }
 // Must be a valid email address
 function isValidEmail(email) {
-  return /^[0-9a-z]{5,13}\@\w*\.[a-z]{3}$/.test(email);
+  return /^[0-9a-z]*\@\w*\.[a-z]+$/.test(email);
 }
 // Must contain a 13 or 16 numbers
 function isValidCardNumber(cardNumber) {
-  return /^\d{13}(\d\d\d)?$/.test(cardNumber);
+  return /^\d{13,16}$/.test(cardNumber);
 }
 // Must contain a 5 number
 function isValidZipCode(zipCode) {
@@ -319,3 +319,19 @@ activityCheckboxes.each((index, checkbox) => {
     $(e.target).parent().attr("class", "");
   });
 });
+
+
+function validateName() {
+  const nameError = $("#name-hint.hint");
+  const nameInput1 = $("#name").val().trim();
+  if (nameInput1 === "") {
+    nameError.show();
+  } else {
+    nameError.hide();
+  }
+}
+// Call the validateName() function once on page load
+validateName();
+
+// Add an input event handler for the named field
+$("#name").on("input", validateName);
