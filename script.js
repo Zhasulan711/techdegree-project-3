@@ -140,7 +140,7 @@ function isValidUsername(username) {
 }
 // Must be a valid email address
 function isValidEmail(email) {
-  return /^[0-9a-z]*\@\w*\.[a-z]+$/.test(email);
+  return /^[0-9a-z]+\@\w+\.[a-z]+$/.test(email);
 }
 // Must contain a 13 or 16 numbers
 function isValidCardNumber(cardNumber) {
