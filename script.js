@@ -1,337 +1,370 @@
-/***
- * 3) Job Role Section
- */
-$(".other-job-role").hide();
-$("#title").on("change", (e) => {
-  const selectedValue = $(e.target).val();
-  if (selectedValue === "other") {
-    $("#other-job-role").show();
-  } else {
-    $("#other-job-role").hide();
-  }
+
+
+
+ 
+
+
+//global variable
+let name_hint = document.getElementById('name-hint');
+let email_hint = document.getElementById('email-hint');
+let credit_card_hint = document.getElementById('cc-hint');
+let zip_code_hint = document.getElementById('zip-hint');
+let three_digit= document.getElementById('cvv-hint');
+
+
+
+//var inputNameValueParent = inputNameValue.parentNode;
+
+
+
+
+
+
+
+
+
+
+//get the value of the input element 
+var inputElement = document.getElementById('name');
+
+// create function for the focus state
+function focusOnFirstForm(){
+    var inputName = document.getElementById('name').focus();
+
+}
+focusOnFirstForm();
+//When page load  passing the fucntionon document load 
+window.onload = function (){
+  return  focusOnFirstForm()
+
+}
+//This will select the Select element in option section
+var jobRole = document.getElementById("title");
+
+//add an eventListener to jobRole then show other job role
+jobRole.addEventListener("change", (e) => {
+    //var jobRoleValue = e.target.value;
+    var otherJobRole = document.querySelector("#title option[value='other']");
+    if(otherJobRole.selected===true){
+       return secondJobRole.style.display="block";
+    } else{
+        return secondJobRole.style.display="none";
+    }
+
 });
 
-/***
- * 4) T-Shirt Info Section
- */
-const shirtLabel = $("#shirt-colors label");
-const shirtColors = $("#color option");
-const theme = $("#color");
-shirtLabel.hide();
-shirtColors.hide();
-theme.hide();
-$("#design").on("change", (e) => {
-  const selectedValue = $(e.target).val();
-  if (selectedValue === "js puns") {
-    shirtColors.slice(4, 7).hide(); // this is link of slice() https://api.jquery.com/slice/
-    shirtColors.slice(1, 4).show();
-  } else if (selectedValue === "heart js") {
-    shirtColors.slice(1, 4).hide();
-    shirtColors.slice(4, 7).show();
-  }
-  shirtLabel.show();
-  theme.show();
-  // change when changing the subject to the main text
-  theme.val("Select a design theme above");
-});
 
-/***
- * 5) Activities Section
- */
-/***
- * EXTRA CREDIT 1) Conflicting Activity Times
- */
+/***Select the other job role so we can hide***/
+var secondJobRole = document.getElementById('other-job-role');
+var secondJobRoleValue = document.getElementById('other-job-role').value;
+// creating function to hide other-job-role
 
-const activities = $("#activities input[type='checkbox']");
-const activitiesCost = $("#activities-cost");
+var hideOtherJobByDefault = function(){
+  return secondJobRole.style.display='none';
 
-$(".activities").on("change", "input[type='checkbox']", (e) => {
-  const selectedCheckbox = $(e.target);
-  const selectedTime = selectedCheckbox.attr("data-day-and-time");
+};
+hideOtherJobByDefault();
 
-  let totalCost = 0;
-  activities.each((index, element) => {
-    const checkbox = $(element);
-    const checkboxTime = checkbox.attr("data-day-and-time");
+ let colorMenu = document.getElementById('color');
 
-    if (selectedTime === checkboxTime && selectedCheckbox !== checkbox) {
-      // If the selected activity conflicts with another, disable the conflicting one
-      if (selectedCheckbox.prop("checked")) {
-        checkbox.prop("disabled", true);
-        checkbox.parent().attr("class", "disabled");
-      } else {
-        checkbox.prop("disabled", false);
-        checkbox.parent().attr("class", "");
+
+var hideColorMenuByDefault = function(){
+  return colorMenu.setAttribute('disabled', true);
+};
+hideColorMenuByDefault();
+ 
+//let's create function to loop over color menus then clear out the last previous color on the form based on it index
+
+var loopOverOptions = document.querySelectorAll('[data-theme]');
+console.log(loopOverOptions);
+
+//reference to the color section
+ var designTheme = document.getElementById('design');//this will grab the design to be manipulate later.
+ //console.log(designTheme);
+let designThemeValue =document.getElementById('design').value;
+console.log(designThemeValue);
+
+ colorMenu.disabled = true;
+ 
+ //EventListener to designTheme
+ designTheme.addEventListener('change', (e) =>{
+   colorMenu.disabled = false;
+   
+   //console.log('Selected Design: ', designTheme.value);
+   loopOverOptions.forEach(option => {
+    
+      var loopValue = e.target.value;
+      console.log('here is the value ', loopValue);
+      dataTheme = option.getAttribute('data-theme');
+      //console.log('Color Options Theme: ', dataTheme);
+      if( loopValue === dataTheme){
+       
+          option.style.display= '';
+         loopValue.hidden ='true';
+         
+       // option.style.display = clearOutPreviousColor();
+      }else{
+        option.style.display ='none';
+        colorMenu.disabled = false;
       }
-    }
-
-    if (checkbox.prop("checked")) {
-      totalCost += parseInt(checkbox.attr("data-cost"));
-    }
-  });
-
-  activitiesCost.text("Total: $" + totalCost);
+      if(loopValue === 'js puns'){
+        loopOverOptions[0].selected = true;
+      } else {
+        loopOverOptions[4].selected = true;
+      }
+        
+      
+   })
+  
 });
 
-/***
- * 6) Payment Info Section
- */
-const payment = $("#payment");
-const paymentOption = $("#payment option");
-paymentOption.slice(0).hide();
-paymentOption.slice(1).show();
-$("#paypal").hide();
-$("#bitcoin").hide();
-payment.on("change", (e) => {
-  const selectedValue = $(e.target).val();
-  if (selectedValue === "paypal") {
-    $("#credit-card").hide();
-    $("#paypal").show();
-    $("#bitcoin").hide();
-  } else if (selectedValue === "bitcoin") {
-    $("#credit-card").hide();
-    $("#bitcoin").show();
-    $("#paypal").hide();
-  } else {
-    $("#credit-card").show();
-    $("#paypal").hide();
-    $("#bitcoin").hide();
+ //Register for activities section
+ // reference to legend in fieldset
+const legendActivities = document.querySelector("#activities legend");
+ console.log(legendActivities);
+ //total p cost
+ let p = document.getElementById("activities-cost");
+ console.log(p);
+ // total cost of activity
+let initialCost = 0;
+let activity = document.getElementById('activities');
+//event handler on change 
+activity.addEventListener('change', (e) => {
+  
+  
+  let currentElementAffected = parseInt(e.target.getAttribute(["data-cost"]))
+  console.log(currentElementAffected);
+  //condition to check and check 
+  if (e.target.checked == true){
+    initialCost += currentElementAffected;
+  } else if (e.target.checked == false){
+
+    initialCost -= currentElementAffected;
   }
+  p.innerHTML =`Total:$${initialCost}`;
 });
+let creditCard = document.getElementById('credit-card');
 
-/***
- * 7) Form validation same as - 9) Visual Validation Errors same as - Extra Credit 2)Real-Time Error Messages same as - EXTRA CREDITE 3) Conditional Error Message
- */
-const usernameInput = $("#name");
-const emailInput = $("#email");
-const cardNumberInput = $("#cc-num");
-const zipCodeInput = $("#zip");
-const ccvInput = $("#cvv");
+let paypal = document.getElementById('paypal');
 
-// SET UP EVENTS
-function showOrHideTip(show, element) {
-  // show element when show is true, hide when false
-  if (show) {
-    $(element).show();
-  } else {
-    $(element).hide();
+let bitcoin = document.getElementById('bitcoin');
+
+let paymentMethod = document.getElementById('payment');
+//when windows load display the payment method to credit-card
+
+
+window.onload = function() {
+ 
+  
+  paypal.setAttribute('hidden', true);
+  
+bitcoin.setAttribute('hidden', true);
+  
+  let paymentDisplayMethod = document.querySelector("#payment option[value= 'select method']").innerHTML='Credit Card';
+  
+  
+
+  //paymentDisplayMethod.innerHTML= 'Credit Card';
+  
+};
+
+
+// function to handle apyment method
+function handlePaymentMethod(event){
+  let  paymentSelected= event.target.value;
+  //display and hide other payment based on user's input
+  if(paymentSelected=== 'credit-card'){
+    creditCard.style.display='block';
+    paypal.style.display='none';
+    bitcoin.style.display='none';
+ 
+  }else if(paymentSelected=== 'paypal'){
+    paypal.style.display = 'block';
+    creditCard.style.display = 'none';
+    bitcoin.style.display = 'none';
+  } else if(paymentSelected === 'bitcoin'){
+    bitcoin.style.display = 'block';
+    creditCard.style.display = 'none';
+    paypal.style.display = 'none';
   }
+ 
 }
-
-function createListener(validator) {
-  return (e) => {
-    const text = $(e.target).val();
-    const valid = validator(text);
-    const showTip = text !== "" && !valid;
-    const tooltip = $(e.target).next();
-    showOrHideTip(showTip, tooltip);
-    if (!valid) {
-      $(e.target).addClass("error");
-    } else {
-      $(e.target).removeClass("error");
-    }
-  };
-}
-
-// Validators
-//
-function isValidUsername(username) {
-  return /^\w+$/.test(username);
-}
-// Must be a valid email address
-function isValidEmail(email) {
-  return /^[0-9a-z]+\@\w+\.[a-z]+$/.test(email);
-}
-// Must contain a 13 or 16 numbers
-function isValidCardNumber(cardNumber) {
-  return /^\d{13,16}$/.test(cardNumber);
-}
-// Must contain a 5 number
-function isValidZipCode(zipCode) {
-  return /^\d{5}$/.test(zipCode);
-}
-// Must contain a 3 numbers
-function isValidCCV(ccv) {
-  return /^\d{3}$/.test(ccv);
-}
-
-usernameInput.on("input", createListener(isValidUsername));
-
-emailInput.on("input", createListener(isValidEmail));
-
-cardNumberInput.on("input", createListener(isValidCardNumber));
-
-zipCodeInput.on("input", createListener(isValidZipCode));
-
-ccvInput.on("input", createListener(isValidCCV));
-
-$(
-  "#name, #email, #activities-box, #exp-month, #exp-year, #cc-num, #zip, #cvv"
-).removeClass("error-border");
-function validateForm() {
-  // Validate each required field
-  const isNameValid = isValidUsername(usernameInput.val());
-  const isEmailValid = isValidEmail(emailInput.val());
-  const isCardNumberValid = isValidCardNumber(cardNumberInput.val());
-  const isZipCodeValid = isValidZipCode(zipCodeInput.val());
-  const isCCVValid = isValidCCV(ccvInput.val());
-  const isActivitySelected =
-    $("#activities input[type='checkbox']:checked").length > 0;
-  // If credit card is selected, validate credit card details
-  const paymentMethod = $("#payment").val();
-  let isPaymentValid = true;
-  if (paymentMethod === "credit-card") {
-    const isCardNumberValid = isValidCardNumber(cardNumberInput.val());
-    const isZipCodeValid = isValidZipCode(zipCodeInput.val());
-    const isCcvValid = isValidCCV(ccvInput.val());
-    isPaymentValid = isCardNumberValid && isZipCodeValid && isCcvValid;
-  }
-
-  // Show/hide validation tips
-  showOrHideTip(!isNameValid, $("#name-hint")[0]);
-  showOrHideTip(!isEmailValid, $("#email-hint")[0]);
-  showOrHideTip(!isCardNumberValid, $("#cc-hint")[0]);
-  showOrHideTip(!isZipCodeValid, $("#zip-hint")[0]);
-  showOrHideTip(!isCCVValid, $("#cvv-hint")[0]);
-  showOrHideTip(!isActivitySelected, $("#activities-hint")[0]);
-
-  selectedValueMonth = $("#exp-month").val();
-  if (selectedValueMonth === "Select Date") {
-    $("#exp-month").addClass("error");
-    $("#exp-month").addClass("error-border");
-    $("#exp-month").prev().addClass("not-valid");
-    $("#exp-month").prev().removeClass("valid");
-  } else {
-    $("#exp-month").removeClass("error");
-    $("#exp-month").removeClass("error-border");
-    $("#exp-month").prev().removeClass("not-valid");
-    $("#exp-month").prev().addClass("valid");
-  }
-
-  selectedValueYear = $("#exp-year").val();
-  if (selectedValueYear === "Select Year") {
-    $("#exp-year").addClass("error");
-    $("#exp-year").addClass("error-border");
-    $("#exp-year").prev().addClass("not-valid");
-    $("#exp-year").prev().removeClass("valid");
-  } else {
-    $("#exp-year").removeClass("error");
-    $("#exp-year").removeClass("error-border");
-    $("#exp-year").prev().removeClass("not-valid");
-    $("#exp-year").prev().addClass("valid");
-  }
+document.addEventListener('change', handlePaymentMethod);
+// create function for nameInput validation
+function validateName() {
+  let name_hint = document.getElementById('name-hint');
+  const inputNameValue = document.getElementById("name").value;
+  const nameRegex = /^[a-zA-Z\s]+$/;
+  const isNameValid = nameRegex.test(inputNameValue);
+  const labelName = document.querySelector('label[for="name"]');
 
   if (!isNameValid) {
-    $("#name").addClass("error");
-    $("#name").addClass("error-border");
-    $("#name").parent().addClass("not-valid");
-    $("#name").parent().removeClass("valid");
+    
+    labelName.classList.add("not-valid");
+    labelName.classList.remove("valid");
+    labelName.lastElementChild.style.display = "block";
   } else {
-    $("#name").removeClass("error");
-    $("#name").removeClass("error-border");
-    $("#name").parent().removeClass("not-valid");
-    $("#name").parent().addClass("valid");
+   
+    labelName.classList.add("valid");
+    labelName.classList.remove("not-valid");
+    labelName.lastElementChild.style.display = "none";
   }
+
+  return isNameValid;
+}
+
+// Function to validate the email field
+function validateEmail() {
+  const inputEmailValue = document.getElementById("email").value;
+  const emailRegex = /^[a-z0-9]+@[a-z]+\.[a-z]{2,3}$/;
+  const isEmailValid = emailRegex.test(inputEmailValue);
+  const labelEmail = document.querySelector('label[for="email"]');
 
   if (!isEmailValid) {
-    $("#email").addClass("error");
-    $("#email").addClass("error-border");
-    $("#email").parent().addClass("not-valid");
-    $("#email").parent().removeClass("valid");
+    labelEmail.classList.add("not-valid");
+    labelEmail.classList.remove("valid");
+    labelEmail.lastElementChild.style.display = "block";
   } else {
-    $("#email").removeClass("error");
-    $("#email").removeClass("error-border");
-    $("#email").parent().removeClass("not-valid");
-    $("#email").parent().addClass("valid");
+    labelEmail.classList.add("valid");
+    labelEmail.classList.remove("not-valid");
+    labelEmail.lastElementChild.style.display = "none";
   }
 
-  if (!isActivitySelected) {
-    $("#activities-box").addClass("error");
-    $("#activities-box").addClass("error-border");
-    $("#activities-box").parent().addClass("not-valid");
-    $("#activities-box").parent().removeClass("valid");
-  } else {
-    $("#activities-box").removeClass("error");
-    $("#activities-box").removeClass("error-border");
-    $("#activities-box").parent().removeClass("not-valid");
-    $("#activities-box").parent().addClass("valid");
-  }
-
-  if (!isCardNumberValid) {
-    $("#cc-num").addClass("error");
-    $("#cc-num").addClass("error-border");
-    $("#cc-num").parent().addClass("not-valid");
-    $("#cc-num").parent().removeClass("valid");
-  } else {
-    $("#cc-num").removeClass("error");
-    $("#cc-num").removeClass("error-border");
-    $("#cc-num").parent().removeClass("not-valid");
-    $("#cc-num").parent().addClass("valid");
-  }
-
-  if (!isZipCodeValid) {
-    $("#zip").addClass("error");
-    $("#zip").addClass("error-border");
-    $("#zip").parent().addClass("not-valid");
-    $("#zip").parent().removeClass("valid");
-  } else {
-    $("#zip").removeClass("error");
-    $("#zip").removeClass("error-border");
-    $("#zip").parent().removeClass("not-valid");
-    $("#zip").parent().addClass("valid");
-  }
-
-  if (!isCCVValid) {
-    $("#cvv").addClass("error");
-    $("#cvv").addClass("error-border");
-    $("#cvv").parent().addClass("not-valid");
-    $("#cvv").parent().removeClass("valid");
-  } else {
-    $("#cvv").removeClass("error");
-    $("#cvv").removeClass("error-border");
-    $("#cvv").parent().removeClass("not-valid");
-    $("#cvv").parent().addClass("valid");
-  }
-  // Prevent form submission if any of the fields are invalid
-  if (!isNameValid || !isEmailValid || !isActivitySelected || !isPaymentValid) {
-    return false;
-  }
-  return true;
+  return isEmailValid;
 }
 
-// FORM TO SUBMIT
-$("form").on("submit", (e) => {
-  if (!validateForm()) {
-    e.preventDefault(); // Prevent form submission if validation fails
+// Function to validate the credit card field
+function validateCreditCard() {
+  const creditCardValue = document.getElementById("cc-num").value;
+  const cardRegex = /^\d{13,16}$/;
+  const isCardValid = cardRegex.test(creditCardValue);
+  const labelCCNumber = document.querySelector('label[for="cc-num"]');
+
+  if (!isCardValid) {
+    labelCCNumber.classList.add("not-valid");
+    labelCCNumber.classList.remove("valid");
+    labelCCNumber.lastElementChild.style.display = "block";
+  } else {
+    labelCCNumber.classList.add("valid");
+    labelCCNumber.classList.remove("not-valid");
+    labelCCNumber.lastElementChild.style.display = "none";
+  }
+
+  return isCardValid;
+}
+function validateZip() {
+  const zipValue = document.getElementById("zip").value;
+  const zipRegex = /^\d{5}$/;
+  const isZipValid = zipRegex.test(zipValue);
+  const labelZip = document.querySelector('label[for="zip"]');
+
+  if (!isZipValid) {
+    labelZip.classList.add("not-valid");
+    labelZip.classList.remove("valid");
+    labelZip.lastElementChild.style.display = "block";
+  } else {
+    labelZip.classList.add("valid");
+    labelZip.classList.remove("not-valid");
+    labelZip.lastElementChild.style.display = "none";
+  }
+
+  return isZipValid;
+}
+// Function to validate the CVV field
+function validateCVV() {
+  const cvvValue = document.getElementById("cvv").value;
+  const cvvRegex = /^[0-9]{3}$/;
+  const isCvvValid = cvvRegex.test(cvvValue);
+  const labelCvv = document.querySelector('label[for="cvv"]');
+
+  if (!isCvvValid) {
+    labelCvv.classList.add("not-valid");
+    labelCvv.classList.remove("valid");
+    labelCvv.lastElementChild.style.display = "block";
+  } else {
+    labelCvv.classList.add("valid");
+    labelCvv.classList.remove("not-valid");
+    labelCvv.lastElementChild.style.display = "none";
+  }
+
+  return isCvvValid;
+}
+ //function to validate fieldset 
+ function fieldsetValidation(){
+  
+  const activities_hint = document.getElementById('activities-hint');
+  const fieldset = document.getElementById('activities');
+  
+  const checkboxes = document.querySelectorAll('#activities-box input[type="checkbox"]');
+  const check = Array.from(checkboxes).some(checkbox => checkbox.checked);
+ 
+  
+
+  if(!check){
+   
+    fieldset.classList.add('not-valid');
+
+    fieldset.classList.remove('valid');
+ fieldset.style.display = 'block';
+
+  }else {
+    fieldset.classList.add('valid');
+    fieldset.classList.remove('not-valid');
+    fieldset.style.display = 'none';
+   
+
+
+  }
+return check;
+ }
+// Add submit event listener to the form
+document.querySelector("form").addEventListener("submit", function (event) {
+  // Validate each field and prevent form submission if any field is invalid
+  const isNameValid = validateName();
+  const isEmailValid = validateEmail();
+  const isCardValid = validateCreditCard();
+  const isZipValid = validateZip();
+  const isCvvValid = validateCVV();
+  const check= fieldsetValidation();
+
+  if(!isNameValid || !isEmailValid || !isCardValid || !isZipValid || !isCvvValid || !check){
+    event.preventDefault();
+  } else {
+   //console.log('form submittes successfully');
+   
   }
 });
 
-// /***
-//  * 8) The Activities Section
-//  */
-const activityCheckboxes = $('.activities input[type="checkbox"]');
 
-activityCheckboxes.each((index, checkbox) => {
-  $(checkbox).on("focus", (e) => {
-    $(e.target).parent().attr("class", "focus");
-  });
-  $(checkbox).on("blur", (e) => {
-    $(e.target).parent().attr("class", "");
-  });
+
+//Create a variable to reference the activities’ <input type=”checkbox”> elements, and log out the variable to ensure it is what you think it is.
+
+const checkBoxes= document.querySelectorAll('#activities-box input[type="checkbox"]');
+let checkBoxesParent = checkBoxes.parentElement;
+console.log(checkBoxes);
+//Use the variable that was just created to loop over the activities’ checkboxes.
+checkBoxes.forEach(element => {
+  element.addEventListener('focus', function(){
+    element.parentElement.classList.add('focus');
+    element.parentElement.classList.remove('blur');
+  })
+  
 });
 
 
-function validateName() {
-  const nameError = $("#name-hint.hint");
-  const nameInput1 = $("#name").val().trim();
-  if (nameInput1 === "") {
-    nameError.show();
-  } else {
-    nameError.hide();
-  }
-}
-// Call the validateName() function once on page load
-validateName();
 
-// Add an input event handler for the named field
-$("#name").on("input", validateName);
+//create two functions -one with focus and another with blur
+// focus state functionh
+//checkboxes.forEach(element => {
+ // element.addEventListener('focus', function(){
+// element.parentNode.classList.add('focus');
+ 
+
+ // })
+ // element.addEventListener('blur', function(){
+    //element.parentNode.classList.add('blur');
+  //})
+ 
+
+//});
+ 
